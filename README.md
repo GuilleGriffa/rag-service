@@ -14,7 +14,7 @@ This project is a Retrieval-Augmented Generation (RAG) system that allows users 
 
 ## Requirements
 
-- Python 3.7 or higher
+- Python 3.9 or higher
 - Dependencies (listed in `requirements.txt`)
 
 ## Installation
@@ -39,7 +39,7 @@ It is recommended to use a virtual environment to manage dependencies. You can c
 
 ### 3. Install dependencies:
 
-Install the required Python packages using pip:
+Install the required Python packages using `pip`:
 
 ```bash
    pip install -r requirements.txt
@@ -47,7 +47,7 @@ Install the required Python packages using pip:
 
 ### 4. Set up environment variables:
 
-Create a .env file in the root directory of the project, and add the following variables:
+Create a `.env` file in the root directory of the project, and add the following variables:
 
 ```env
 COHERE_API_KEY=your_cohere_api_key
@@ -58,7 +58,7 @@ You can obtain a Cohere API key by signing up on the Cohere website.
 
 ### 1. Run the application: 
 
-Once you have set up the environment, you can start the FastAPI application using uvicorn:
+Once you have set up the environment, you can start the FastAPI application using `uvicorn`:
 
 ```bash
    uvicorn main:app --reload
@@ -66,7 +66,7 @@ Once you have set up the environment, you can start the FastAPI application usin
 
 ### 2. API endpoints:
 
-- POSt/ask: This endpoint allows users to upload a document and ask a question. The document is processed, and an answer is generated based on the content of the most relevant chunk.
+- `POST/ask`: This endpoint allows users to upload a document and ask a question. The document is processed, and an answer is generated based on the content of the most relevant chunk.
 
 **Request Parameters:**
 
@@ -78,25 +78,27 @@ Once you have set up the environment, you can start the FastAPI application usin
 
 - answer: (string) The generated answer to the user's question.
 
-Example request using curl:
+Example request using `curl`:
 
 ```bash
    curl -X 'POST' \
   'http://127.0.0.1:8000/ask' \
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
-  -F 'user_name=Guillermina' \
-  -F 'question=Quien es Zara?' \
+  -F 'user_name=Guille Griffa' \
+  -F 'question=What did Emma decide to do?' \
   -F 'file=@path/to/document.docx'
 ```
 
 Example response:
 
 ```json
-{"answer":"Zara es un valiente explorador que descubre un artefacto antiguo que podría salvar a la galaxia de una guerra intergaláctica entre los Dracorians y los Lumis. 💫🛸🌌"}
+{
+   "answer":"Emma decides to share her magical day with the town, leaving a lasting impression on everyone.🧚♀️"
+   }
 ```
 
-## Directory structure
+## Directory Structure
 
 ```plaintext
 .
