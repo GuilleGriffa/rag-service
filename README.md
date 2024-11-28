@@ -108,6 +108,6 @@ Example response:
 ├── llm.py                # Functions for generating answers using Cohere's LLM
 ├── chromadb_client.py    # Initialize and manage ChromaDB collection     
 ├── requirements.txt      # List of project dependencies
-├── .env                  # Environment variables (COHERE_API_KEY)
+├── document.docx         # Document to be processed
 ├── README.md             # Project documentation
 ```
