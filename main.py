@@ -1,48 +1,46 @@
-from fastapi import FastAPI, Form, File, UploadFile, HTTPException
-from doc_processing import load_document, split_document_into_chunks
-from embeddings import generate_embeddings_for_chunks, store_embeddings_in_chromadb, search_most_relevant_chunk
+from fastapi import FastAPI
+from doc_processing import process_and_store_document_on_start
+from embeddings import  search_most_relevant_chunk
 from llm import generate_answer
+from pydantic import BaseModel
+
+# Define the Pydantic model
+class QuestionRequest(BaseModel):
+    user_name: str
+    question: str
 
 # Initialize the FastAPI application
 app = FastAPI()
 
-# Helper function to handle the document processing pipeline
-async def process_document(file: UploadFile):
-    """
-    Process the uploaded document by splitting it into chunks and generating embeddings.
-    """
-    try:
-        # Load and read the uploaded document
-        document_text = await load_document(file)
-
-        # Split the document into chunks
-        chunks = split_document_into_chunks(document_text)
-
-        # Generate embeddings for each chunk
-        embeddings = generate_embeddings_for_chunks(chunks)
-
-        # Store embeddings in ChromaDB
-        store_embeddings_in_chromadb(chunks, embeddings)
-
-        return chunks
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Document processing failed: {e}")
-
 @app.post("/ask")
-async def ask_question(
-    user_name: str = Form(...),  # User's name
-    question: str = Form(...),  # User's question
-    file: UploadFile = File(...),  # File uploaded by the user
-):
-    
+async def ask_question(request: QuestionRequest):
     """
-    Endpoint to handle user question and document upload. The document is processed, embeddings are generated,
-    stored in ChromaDB, and a relevant answer is generated using a language model.
+    Endpoint to handle a user's question and generate a relevant answer based on a stored document.
+    
+    This endpoint processes the document (if not already processed), generates embeddings, 
+    stores them in ChromaDB, and then uses a language model to provide an answer to the 
+    user's question based on the most relevant chunk of the document.
+
+    Parameters:
+    - request (QuestionRequest): A Pydantic model containing the user's name (`user_name`) 
+      and the question (`question`).
+      
+    Returns:
+    - dict: A dictionary containing the generated answer to the user's question.
+
+    Flow:
+    1. The function checks if the document has already been processed and stored. 
+    2. If not, it processes and stores the document.
+    3. It then searches for the most relevant chunk of the document using the user's question.
+    4. Finally, it generates and returns a concise, relevant answer based on the context of that chunk.
     """
 
-    # Process the document and generate embeddings
-    chunks = await process_document(file)
-    
+    user_name = request.user_name
+    question = request.question
+
+    # Event to process and store the document (only once)
+    await process_and_store_document_on_start()
+
     # Search for the most relevant chunk based on the question
     relevant_chunk = search_most_relevant_chunk(question)
 

@@ -5,6 +5,8 @@ from fastapi import HTTPException
 
 # Initialize Cohere client
 cohere_api_key = os.getenv("COHERE_API_KEY")
+if not cohere_api_key:
+    raise ValueError("COHERE_API_KEY is not set in environment variables.")
 cohere_client = cohere.Client(cohere_api_key)
 
 # Cache to store previously generated responses to avoid redundant API calls

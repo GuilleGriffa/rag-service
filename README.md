@@ -2,11 +2,11 @@
 
 ## Project Overview
 
-This project is a Retrieval-Augmented Generation (RAG) system that allows users to upload a document, ask a question, and receive a relevant answer based on the document's content. The system processes the document, generates embeddings for text chunks, stores them in ChromaDB, and retrieves the most relevant chunk based on the user's question. Finally, it uses Cohere's large language model (LLM) to generate a concise, one-sentence answer in the same language as the question.
+This project is a Retrieval-Augmented Generation (RAG) system that allows users to ask questions and receive relevant answers based on the content of a pre-processed document. The document is automatically processed at startup, its text is split into chunks, and embeddings are generated and stored in ChromaDB. When a user asks a question, the system retrieves the most relevant chunk and uses Cohere's large language model (LLM) to generate a concise, one-sentence answer in the same language as the question.
 
 ## Features
 
-- **Document Upload**: Users can upload a document (in DOCX format) for processing.
+- **Automated Document Processing**: A specific document (in DOCX format) is automatically loaded, processed, and prepared for querying when the system starts.
 - **Text Chunking**: The document is split into smaller chunks for easier processing and embedding.
 - **Embedding Generation**: Text chunks are transformed into embeddings using Cohere's API.
 - **ChromaDB Storage**: The embeddings and corresponding text chunks are stored in ChromaDB for efficient retrieval.
@@ -66,13 +66,12 @@ Once you have set up the environment, you can start the FastAPI application usin
 
 ### 2. API endpoints:
 
-- `POST/ask`: This endpoint allows users to upload a document and ask a question. The document is processed, and an answer is generated based on the content of the most relevant chunk.
+- `POST/ask`: This endpoint enables users to ask a question. The answer is derived from the most relevant chunk of the pre-processed document.
 
 **Request Parameters:**
 
 - user_name: (string) The name of the user.
 - question: (string) The question the user wants to ask.
-- file: (file) The document to be uploaded (in DOCX format).
 
 **Response:**
 
@@ -81,13 +80,14 @@ Once you have set up the environment, you can start the FastAPI application usin
 Example request using `curl`:
 
 ```bash
-   curl -X 'POST' \
-  'http://127.0.0.1:8000/ask' \
-  -H 'accept: application/json' \
-  -H 'Content-Type: multipart/form-data' \
-  -F 'user_name=Guille Griffa' \
-  -F 'question=What did Emma decide to do?' \
-  -F 'file=@path/to/document.docx'
+   curl -X POST "http://127.0.0.1:8000/ask" \
+  -H "accept: application/json" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_name": "Guille Griffa",
+    "question": "What did Emma decide to do?"
+  }'
+
 ```
 
 Example response:
@@ -106,6 +106,7 @@ Example response:
 ├── doc_processing.py     # Functions for document processing and chunking
 ├── embeddings.py         # Functions for generating and storing embeddings
 ├── llm.py                # Functions for generating answers using Cohere's LLM
+├── chromadb_client.py    # Initialize and manage ChromaDB collection     
 ├── requirements.txt      # List of project dependencies
 ├── .env                  # Environment variables (COHERE_API_KEY)
 ├── README.md             # Project documentation
