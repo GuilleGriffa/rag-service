@@ -56,7 +56,7 @@ def generate_answer(question: str, relevant_chunk: str) -> str:
             response = cohere_client.generate(
                 model='command-xlarge-nightly',  # Cohere model
                 prompt=prompt,
-                max_tokens=100,  # Increased token limit for more detailed answers
+                max_tokens=50,  # Increased token limit for more detailed answers
                 temperature=0,  # Ensures deterministic responses
             )
 
