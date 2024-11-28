@@ -1,0 +1,30 @@
+curl -X POST "http://127.0.0.1:8000/ask" \
+  -H "accept: application/json" \
+  -H "Content-Type: multipart/form-data" \
+  -F "user_name=Guille" \
+  -F "question=Quien es Zara?" \
+  -F "file=@C:/Users/guill/Documents/Pi/rag-service/document.docx"
+
+curl -X POST "http://127.0.0.1:8000/ask" \
+  -H "accept: application/json" \
+  -H "Content-Type: multipart/form-data" \
+  -F "user_name=Guille" \
+  -F "question=What did Emma decide to do?" \
+  -F "file=@C:/Users/guill/Documents/Pi/rag-service/document.docx"
+
+curl -X POST "http://127.0.0.1:8000/ask" \
+  -H "accept: application/json" \
+  -H "Content-Type: multipart/form-data" \
+  -F "user_name=Guille" \
+  -F "question=What is the name of the magical flower?" \
+  -F "file=@C:/Users/guill/Documents/Pi/rag-service/document.docx"
+
+
+
+Answer to the following question: {question}, based on the context included in the last item. 
+The answer must: 
+	- Be concise and clear, no longer than one sentence.
+	- Be written in {language}, despite the context provided in Spanish. 
+	- Include relevant emojis summarizing the content.
+	- Be in third person.
+    	- Be based on this context: {relevant_chunk}
