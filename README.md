@@ -98,6 +98,58 @@ Example response:
    }
 ```
 
+## Running with Docker
+
+You can run the API either by building the Docker image yourself or by using a pre-built image from Docker Hub.
+
+### 1. Build and run the Docker image locally:
+
+To build the Docker image and run the application, follow these steps:
+
+- Build the Docker image:
+
+```bash
+   docker build -t rag-service .
+```
+
+- Run the Docker container:
+
+```bash
+   docker run -d -p 8000:8000 rag-service
+```
+
+After running this command, the API will be accessible at `http://127.0.0.1:8000/docs`. You can also interact with the API using `curl` as described above.
+
+### 2. Use the pre-built image from Docker Hub:
+
+Alternatively, you can pull and run the pre-built image from Docker Hub:
+
+- Pull the Docker image:
+
+```bash
+   docker pull guillerminagriffa/rag-api:latest
+```
+- Run the Docker container:
+
+```bash
+   docker run -d -p 8000:8000 guillerminagriffa/rag-api:latest
+```
+
+After running this command, the API will be accessible at `http://127.0.0.1:8000/docs`. You can also interact with the API using `curl` as described above.
+
+### 3. Stopping the Docker container:
+
+To stop the running Docker container, first, find the container ID using:
+
+```bash
+   docker ps
+```
+Then, stop the container using the container ID:
+
+```bash
+   docker stop <container_id>
+```
+
 ## Directory Structure
 
 ```plaintext
@@ -109,5 +161,6 @@ Example response:
 ├── chromadb_client.py    # Initialize and manage ChromaDB collection     
 ├── requirements.txt      # List of project dependencies
 ├── document.docx         # Document to be processed
+├── Dockerfile            # Dockerfile for building the image
 ├── README.md             # Project documentation
 ```
